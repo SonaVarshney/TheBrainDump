@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Golang 🌀</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: #e0e0e0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    h1, h2 {
+      color: #88c0d0;
+    }
+    ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+    ul li::before {
+      content: "🌀 ";
+      padding-right: 0.4em;
+    }
+    blockquote {
+      color: #a3be8c;
+      border-left: 4px solid #81a1c1;
+      padding-left: 1em;
+      margin-left: 0;
+      font-style: italic;
+      background-color: #1e1e1e;
+    }
+    a {
+      color: #81a1c1;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h1>🌀 Golang Notes</h1>
+  <p><em>Quick notes and concepts I’ve learned while working with Go.</em></p>
+
+  <h2>🌱 Basics</h2>
+  <ul>
+    <li>Go is statically typed, compiled, and super fast.</li>
+    <li>Has garbage collection and great concurrency support.</li>
+    <li>All Go code belongs inside a <code>package</code>.</li>
+  </ul>
+
+  <h2>🧵 Concurrency</h2>
+  <ul>
+    <li><code>goroutines</code> are lightweight threads.</li>
+    <li><code>channels</code> allow safe communication between goroutines.</li>
+    <li>Use <code>select</code> for non-blocking channel ops.</li>
+  </ul>
+
+  <h2>📦 Standard Library</h2>
+  <ul>
+    <li><code>net/http</code> for building web servers.</li>
+    <li><code>fmt</code> for formatting and printing.</li>
+    <li><code>os</code> and <code>io/ioutil</code> for file handling.</li>
+  </ul>
+
+  <blockquote>
+    “Don’t communicate by sharing memory, share memory by communicating.”
+  </blockquote>
+</body>
+</html>
