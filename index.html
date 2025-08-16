@@ -46,7 +46,7 @@
   flex-wrap: wrap;
 }
 
-.topic-hover {
+.topic-button {
   background-color: #1f1f1f;
   padding: 1rem 1.5rem;
   border-radius: 8px;
@@ -56,7 +56,7 @@
   transition: all 0.3s ease;
 }
 
-.topic-hover:hover {
+.topic-button:hover {
   background-color: #2a2a2a;
   color: #88c0d0;
   transform: translateY(-3px);
@@ -69,28 +69,30 @@
   transition: opacity 0.4s ease-in-out;
 }
 
+
   </style>
 
-  <script>
-  const topicElements = document.querySelectorAll('.topic-hover');
+ <script>
+  const buttons = document.querySelectorAll('.topic-button');
   const contentContainer = document.getElementById('loaded-content');
 
-  topicElements.forEach(topic => {
-    topic.addEventListener('mouseenter', () => {
-      const page = topic.getAttribute('data-page');
+  buttons.forEach(button => {
+    button.addEventListener('click', () => {
+      const page = button.getAttribute('data-page');
 
       fetch(page)
         .then(res => res.text())
         .then(html => {
-          // Extract only the <body> content
           const tempDiv = document.createElement('div');
           tempDiv.innerHTML = html;
+
+          // Extract <body> contents
           const bodyContent = tempDiv.querySelector('body')?.innerHTML || html;
 
+          // Inject and fade in
           contentContainer.innerHTML = bodyContent;
           contentContainer.style.opacity = 0;
 
-          // Trigger fade-in animation
           requestAnimationFrame(() => {
             contentContainer.style.opacity = 1;
           });
@@ -100,6 +102,7 @@
         });
     });
   });
+
 </script>
 
 </head>
@@ -127,12 +130,12 @@
 
   <h2>📚 Topics I have been exploring!</h2>
   <div class="topic-links">
-    <div class="topic-hover" data-page="golang.html">📄 Golang</div>
-    <div class="topic-hover" data-page="system-design.html">📐 System Design</div>
-    <div class="topic-hover" data-page="types.html">🧾 Types</div>
+    <div class="topic-button" data-page="golang.html">📄 Golang</div>
+    <div class="topic-button" data-page="system-design.html">📐 System Design</div>
+    <div class="topic-button" data-page="types.html">🧾 Types</div>
   </div>
-  
-  <div id="loaded-content" class="content-container"></div>
+
+<div id="loaded-content" class="content-container"></div>
 
 </body>
 </html>
