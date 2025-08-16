@@ -71,40 +71,6 @@
 
 
   </style>
-
- <script>
-  const buttons = document.querySelectorAll('.topic-button');
-  const contentContainer = document.getElementById('loaded-content');
-
-  buttons.forEach(button => {
-    button.addEventListener('click', () => {
-      const page = button.getAttribute('data-page');
-
-      fetch(page)
-        .then(res => res.text())
-        .then(html => {
-          const tempDiv = document.createElement('div');
-          tempDiv.innerHTML = html;
-
-          // Extract <body> contents
-          const bodyContent = tempDiv.querySelector('body')?.innerHTML || html;
-
-          // Inject and fade in
-          contentContainer.innerHTML = bodyContent;
-          contentContainer.style.opacity = 0;
-
-          requestAnimationFrame(() => {
-            contentContainer.style.opacity = 1;
-          });
-        })
-        .catch(err => {
-          contentContainer.innerHTML = `<p style="color:red;">Error loading ${page}</p>`;
-        });
-    });
-  });
-
-</script>
-
 </head>
 <body>
   <h1>BrainDump-CS 🧠💻</h1>
@@ -136,6 +102,38 @@
   </div>
 
 <div id="loaded-content" class="content-container"></div>
+
+  <script>
+  const buttons = document.querySelectorAll('.topic-button');
+  const contentContainer = document.getElementById('loaded-content');
+
+  buttons.forEach(button => {
+    button.addEventListener('click', () => {
+      const page = button.getAttribute('data-page');
+
+      fetch(page)
+        .then(res => res.text())
+        .then(html => {
+          const tempDiv = document.createElement('div');
+          tempDiv.innerHTML = html;
+
+          // Extract <body> contents
+          const bodyContent = tempDiv.querySelector('body')?.innerHTML || html;
+
+          // Inject and fade in
+          contentContainer.innerHTML = bodyContent;
+          contentContainer.style.opacity = 0;
+
+          requestAnimationFrame(() => {
+            contentContainer.style.opacity = 1;
+          });
+        })
+        .catch(err => {
+          contentContainer.innerHTML = `<p style="color:red;">Error loading ${page}</p>`;
+        });
+    });
+  });
+</script>
 
 </body>
 </html>
