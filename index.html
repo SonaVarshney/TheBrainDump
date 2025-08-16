@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>BrainDump-CS 🧠💻</title>
   <style>
     body {
@@ -16,20 +16,13 @@
     a {
       color: #81a1c1;
       text-decoration: none;
+      cursor: pointer;
     }
     a:hover {
       text-decoration: underline;
     }
     h1, h2 {
       color: #88c0d0;
-    }
-    blockquote {
-      color: #a3be8c;
-      border-left: 4px solid #81a1c1;
-      padding-left: 1em;
-      margin-left: 0;
-      font-style: italic;
-      background-color: #1e1e1e;
     }
     ul {
       list-style-type: none;
@@ -40,36 +33,32 @@
       padding-right: 0.4em;
     }
     .topic-links {
-  display: flex;
-  gap: 1rem;
-  margin-top: 1.5rem;
-  flex-wrap: wrap;
-}
-
-.topic-button {
-  background-color: #1f1f1f;
-  padding: 1rem 1.5rem;
-  border-radius: 8px;
-  color: #e0e0e0;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.topic-button:hover {
-  background-color: #2a2a2a;
-  color: #88c0d0;
-  transform: translateY(-3px);
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.6);
-}
-
-.content-container {
-  margin-top: 2rem;
-  opacity: 0;
-  transition: opacity 0.4s ease-in-out;
-}
-
-
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .topic-button {
+      background-color: #1f1f1f;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      color: #e0e0e0;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      user-select: none;
+    }
+    .topic-button:hover {
+      background-color: #2a2a2a;
+      color: #88c0d0;
+      transform: translateY(-3px);
+      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.6);
+    }
+    .content-container {
+      margin-top: 2rem;
+      opacity: 1;
+      transition: opacity 0.4s ease-in-out;
+    }
   </style>
 </head>
 <body>
@@ -81,59 +70,56 @@
   <h2>👋 Hey, I’m Sona</h2>
   <p>Just a software developer capturing stuff I learn on the way — nothing fancy, just me and my brain dump.</p>
 
-  <h2>🌱 What’s here?</h2>
-  <ul>
-    <li>CS concepts I pick up along the way</li>
-    <li>Code snippets, debugging wisdom & “oh, that’s how it works!” moments</li>
-    <li>Notes on system design, DSA, and whatever tech I’m exploring</li>
-    <li>Anything worth remembering (or forgetting and rediscovering later)</li>
-  </ul>
-
-  <h2>🤷 Why?</h2>
-  <blockquote>
-    Because memory is unreliable, but markdown isn’t.
-  </blockquote>
-
   <h2>📚 Topics I have been exploring!</h2>
   <div class="topic-links">
-    <div class="topic-button" data-page="golang.html">📄 Golang</div>
-    <div class="topic-button" data-page="system-design.html">📐 System Design</div>
-    <div class="topic-button" data-page="types.html">🧾 Types</div>
+    <div class="topic-button" data-page="golang-index.html">📄 Golang</div>
+    <div class="topic-button" data-page="system-design-index.html">📐 System Design</div>
+    <div class="topic-button" data-page="types-index.html">🧾 Types</div>
   </div>
 
-<div id="loaded-content" class="content-container"></div>
+  <div id="loaded-content" class="content-container"></div>
 
   <script>
-  const buttons = document.querySelectorAll('.topic-button');
-  const contentContainer = document.getElementById('loaded-content');
+    const buttons = document.querySelectorAll('.topic-button');
+    const contentContainer = document.getElementById('loaded-content');
 
-  buttons.forEach(button => {
-    button.addEventListener('click', () => {
-      const page = button.getAttribute('data-page');
-
+    function loadContent(page) {
       fetch(page)
-        .then(res => res.text())
+        .then(res => {
+          if (!res.ok) throw new Error('Network response was not ok');
+          return res.text();
+        })
         .then(html => {
           const tempDiv = document.createElement('div');
           tempDiv.innerHTML = html;
-
-          // Extract <body> contents
           const bodyContent = tempDiv.querySelector('body')?.innerHTML || html;
 
-          // Inject and fade in
           contentContainer.innerHTML = bodyContent;
-          contentContainer.style.opacity = 0;
 
-          requestAnimationFrame(() => {
-            contentContainer.style.opacity = 1;
+          // Scroll smoothly to top of content container after loading
+          contentContainer.scrollIntoView({ behavior: 'smooth' });
+
+          // Attach click handlers to subtopic links inside loaded content
+          const subtopicLinks = contentContainer.querySelectorAll('.subtopic-link');
+          subtopicLinks.forEach(link => {
+            link.addEventListener('click', e => {
+              e.preventDefault();
+              const subPage = link.getAttribute('href');
+              loadContent(subPage);
+            });
           });
         })
         .catch(err => {
-          contentContainer.innerHTML = `<p style="color:red;">Error loading ${page}</p>`;
+          contentContainer.innerHTML = `<p style="color:red;">Error loading ${page}: ${err.message}</p>`;
         });
-    });
-  });
-</script>
+    }
 
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        const page = button.getAttribute('data-page');
+        loadContent(page);
+      });
+    });
+  </script>
 </body>
 </html>
